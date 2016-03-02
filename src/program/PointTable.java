@@ -1,6 +1,7 @@
 package program;
 
 import model.Point;
+import program.PointGraph;
 import util.PointGenerator;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -80,7 +81,7 @@ public class PointTable {
         generatePoints.setOnAction((ActionEvent e) -> {
                 data.clear();
                 data.addAll(PointGenerator.generate(numPointsSpinner.getValue(),
-                    new int[] {-5, 5, -5, 5}));
+                    PointGraph.BOUND));
             }
         );
 

@@ -3,6 +3,7 @@ package program;
 import model.Point;
 import javafx.application.Application;
 import javafx.scene.Group;
+import javafx.scene.layout.HBox;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.collections.FXCollections;
@@ -20,21 +21,27 @@ public class PointPlotter extends Application {
     // Table module
     private PointTable tableModule;
 
+    // Graph module
+    private PointGraph graphModule;
+
     // Must override this method for class that extends Application
     @Override
     public void start(Stage stage) {
 
         // Root node
-        Group root = new Group();
+        HBox root = new HBox();
 
         // Initialize the observable list
         data = FXCollections.observableArrayList();
 
+        // Initialize instance of graph module
+        graphModule = new PointGraph(data);
+
         // Initialize instance of table module
         tableModule = new PointTable(data);
 
-        // Add the module view to root node
-        root.getChildren().addAll(tableModule.getView());
+        // Add modules to root
+        root.getChildren().addAll(graphModule.getView(), tableModule.getView());
 
         // Container associated with root node
         Scene scene = new Scene(root);
