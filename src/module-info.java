@@ -13,5 +13,6 @@ module plotter
     requires javafx.fxml;
     requires javafx.graphics;
     
+    // allows package to use FXMLLoader
     opens program to javafx.fxml;
 }

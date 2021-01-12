@@ -20,6 +20,8 @@
 			</plugin>
 
 			<!-- see https://github.com/openjfx/javafx-maven-plugin -->
+			<!-- mvn javafx:run to run the application -->
+			<!-- mvn javafx:jlink to generate a runtime image -->
 			<plugin>
 				<groupId>org.openjfx</groupId>
 				<artifactId>javafx-maven-plugin</artifactId>
