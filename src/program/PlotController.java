@@ -1,12 +1,8 @@
 package program;
 
-import java.util.function.UnaryOperator;
-
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
@@ -17,14 +13,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.control.TextFormatter.Change;
+import javafx.util.converter.NumberStringConverter;
 import model.Point;
 import util.PointSupplier;
 
 public class PlotController
 {
-    private static final String REGEX_INT = "-?([1-9][0-9]*)?";
-    
     // Define range for coordinate plane
     @FXML private Integer X_MAX;
     @FXML private Integer X_MIN;
@@ -52,16 +46,10 @@ public class PlotController
     
     public void initialize()
     {
-        UnaryOperator <Change> filter = val -> val.getControlNewText().matches(REGEX_INT) ? val : null;
-        
         upperLeft = new Point(X_MIN + 1, Y_MAX - 1);
         lowerRight = new Point(X_MAX - 1, Y_MIN + 1);
-        xinput.setTextFormatter(new TextFormatter<>(filter));
-        yinput.setTextFormatter(new TextFormatter<>(filter));
-
-        data.addListener((ListChangeListener.Change<? extends Point> e) -> {
-            plotPoints();
-        });
+        
+        data.addListener((ListChangeListener <Point>)change -> plotPoints());
     }
 
     public void addPoint()
