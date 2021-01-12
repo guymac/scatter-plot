@@ -29,6 +29,9 @@
 					<options>
 						<option>--enable-preview</option>
 					</options>
+					<launcher>plotter</launcher>
+					<jlinkImageName>pointplotter</jlinkImageName>
+					<jlinkZipName>pointplotter</jlinkZipName>
 				</configuration>
 			</plugin>
 		</plugins>
