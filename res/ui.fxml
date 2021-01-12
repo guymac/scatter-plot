@@ -3,7 +3,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.geometry.Insets?>
 <?import java.lang.Integer?>
 
 <!-- see https://openjfx.io/javadoc/14/javafx.fxml/javafx/fxml/doc-files/introduction_to_fxml.html -->
@@ -48,9 +49,17 @@
 				<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
 			</columnResizePolicy>
 			<columns>
-				<TableColumn fx:id="xCol" text="X" minWidth="30" />
-				<TableColumn fx:id="yCol" text="Y" minWidth="30" />
-				<TableColumn fx:id="indexCol" text="Index" minWidth="30" />
+				<TableColumn fx:id="xCol" text="X" minWidth="30">
+							<cellValueFactory>
+								<PropertyValueFactory property="x" />
+							</cellValueFactory>				
+				</TableColumn>
+				<TableColumn fx:id="yCol" text="Y" minWidth="30">
+							<cellValueFactory>
+								<PropertyValueFactory property="y" />
+							</cellValueFactory>
+				
+				</TableColumn>
 			</columns>
 		</TableView>
 		<HBox spacing="10">
