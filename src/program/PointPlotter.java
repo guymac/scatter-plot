@@ -1,47 +1,38 @@
 package program;
 
-import model.Point;
+import java.io.IOException;
+
 import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.layout.HBox;
+import javafx.application.Platform;
+import javafx.scene.layout.Pane;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+
 /**
  * Java FX application that plots points
  * @author Kairi Kozuma
- * @version 1.0
+ * @version 2.0
  */
-public class PointPlotter extends Application {
-
-    // ObservableList of Points
-    private ObservableList<Point> data;
-
-    // Table module
-    private PointTable tableModule;
-
-    // Graph module
-    private PointGraph graphModule;
-
+public class PointPlotter extends Application 
+{
+    
     // Must override this method for class that extends Application
     @Override
-    public void start(Stage stage) {
-
-        // Root node
-        HBox root = new HBox();
-
-        // Initialize the observable list
-        data = FXCollections.observableArrayList();
-
-        // Initialize instance of graph module
-        graphModule = new PointGraph(data);
-
-        // Initialize instance of table module
-        tableModule = new PointTable(data);
-
-        // Add modules to root
-        root.getChildren().addAll(graphModule.getView(), tableModule.getView());
+    public void start(Stage stage) 
+    {
+        Pane root;
+        
+        try
+        {
+            root = FXMLLoader.load(getClass().getResource("/ui.fxml"));
+        } 
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            Platform.exit();
+            return;
+        }
 
         // Container associated with root node
         Scene scene = new Scene(root);
@@ -56,7 +47,8 @@ public class PointPlotter extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) 
+    {
         launch(args);
     }
 }
