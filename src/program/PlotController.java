@@ -32,9 +32,6 @@ public class PlotController
     @FXML private Integer Y_MIN;
     @FXML private Integer RESOLUTION;
 
-    // Define public bounds to random points
-    public int[] BOUND;
-
     @FXML private TableView <Point> table;
     @FXML TableColumn <Point, Number> xCol;
     @FXML TableColumn <Point, Number> yCol;
@@ -51,18 +48,17 @@ public class PlotController
     // ObservableList of Points
     private ObservableList <Point> data = FXCollections.observableArrayList();
 
+    private Point upperLeft, lowerRight;
+    
     public void initialize()
     {
         UnaryOperator <Change> filter = val -> val.getControlNewText().matches(REGEX_INT) ? val : null;
         
-        BOUND = new int[] { X_MIN + 1, X_MAX - 1, Y_MIN + 1, Y_MAX - 1 };
-        xCol.setCellValueFactory(row -> new SimpleObjectProperty<Number>(row.getValue().x()));
-        yCol.setCellValueFactory(row -> new SimpleObjectProperty<Number>(row.getValue().y()));
-        indexCol.setCellValueFactory(row -> new SimpleObjectProperty<Number>(row.getValue().index()));
-
+        upperLeft = new Point(X_MIN + 1, Y_MAX - 1);
+        lowerRight = new Point(X_MAX - 1, Y_MIN + 1);
         xinput.setTextFormatter(new TextFormatter<>(filter));
         yinput.setTextFormatter(new TextFormatter<>(filter));
-        
+
         data.addListener((ListChangeListener.Change<? extends Point> e) -> {
             plotPoints();
         });
@@ -71,7 +67,7 @@ public class PlotController
     public void addPoint()
     {
         data.add(
-                new Point(Integer.parseInt(xinput.getText()), Integer.parseInt(yinput.getText()), data.size() + 1));
+                new Point(Integer.parseInt(xinput.getText()), Integer.parseInt(yinput.getText())));
         xinput.clear();
         yinput.clear();
     }
@@ -79,7 +75,7 @@ public class PlotController
     public void generatePoints()
     {
         data.clear();
-        data.addAll(PointSupplier.generate(numPointsSpinner.getValue(), BOUND));
+        data.addAll(PointSupplier.generate(numPointsSpinner.getValue(), upperLeft, lowerRight));
     }
     
     public void clearPoints()

@@ -19,44 +19,42 @@ import java.util.Comparator;
  */
 public class PointSupplier implements Supplier <Point> 
 {
-    private int X_MIN, X_MAX, Y_MIN, Y_MAX;
-
-    AtomicInteger index = new AtomicInteger(0);
+    private Point upperLeft, lowerRight;
 
     /**
-     * Generate list of random unique points from limits
-     * @param   numberOfPoints number of points to generate
-     * @param   X_MIN minimum x value
-     * @param   X_MAX maximum x value
-     * @param   Y_MIN minimum y value
-     * @param   Y_MAX maximum y value
-     * @return  list of unique Point objects
+     * Supplier of of random points within limits
+     * @param   upperLeft x_min, y_max;
+     * @param   lowerRight x_max, y_min;
      */
-    public PointSupplier(final int X_MIN, final int X_MAX, final int Y_MIN, final int Y_MAX) 
+    public PointSupplier(Point upperLeft, Point lowerRight) 
     {
-        this.X_MIN = X_MIN;
-        this.X_MAX = X_MAX;
-        this.Y_MIN = Y_MIN;
-        this.Y_MAX = Y_MAX;
+        this.upperLeft = upperLeft;
+        this.lowerRight = lowerRight;
     }
 
 
     @Override
     public Point get()
     {
-        int deltaX = X_MAX - X_MIN;
-        int deltaY = Y_MAX - Y_MIN;
+        int deltaX = lowerRight.x() - upperLeft.x();
+        int deltaY = upperLeft.y() - lowerRight.y();
         // Create random point within bounds
-        int x = (int) Math.floor((deltaX + 1) * Math.random()) + X_MIN;
-        int y = (int) Math.floor((deltaY + 1) * Math.random()) + Y_MIN;
-        return new Point(x, y, index.getAndAdd(1));
+        int x = (int) Math.floor((deltaX + 1) * Math.random()) + upperLeft.x();
+        int y = (int) Math.floor((deltaY + 1) * Math.random()) + lowerRight.y();
+        return new Point(x, y);
     }
 
-
-    public static List <Point> generate(int num, int[] bound)
+    /**
+     * Generate a random list of unique (having distinct coordinates) points
+     * 
+     * @param num
+     * @param bound
+     * @return
+     */
+    public static List <Point> generate(int num, Point upperLeft, Point lowerRight)
     {
-        if (bound == null || bound.length != 4 || num < 1) return Collections.emptyList();
-        PointSupplier ps = new PointSupplier(bound[0], bound[1], bound[2], bound[3]);
+        if (upperLeft == null || lowerRight == null || num < 1) return Collections.emptyList();
+        PointSupplier ps = new PointSupplier(upperLeft, lowerRight);
         return Stream.generate(ps).distinct().limit(num).collect(Collectors.toList());
     }
 }
